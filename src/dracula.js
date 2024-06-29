@@ -1,3 +1,4 @@
+import { each } from 'lodash'
 import uuid from 'uuid'
 
 // Testing for string or number data type
@@ -118,5 +119,22 @@ export default class Dracula {
 
   toJSON() {
     return { nodes: this.nodes, edges: this.edges }
+  }
+
+  hash() {
+    let hash = 0
+
+    for (const [key, node] of Object.entries(this.nodes)){
+      const id = node.id
+
+      for (let i = 0; i < id.length; i++) {
+        let char = id.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; 
+      }
+
+    }
+  
+    return hash
   }
 }

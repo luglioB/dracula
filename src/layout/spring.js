@@ -22,10 +22,51 @@ export default class Spring extends Layout {
 
   layout() {
     this.layoutPrepare()
-    for (let i = 0; i < this.iterations; i++) {
-      this.layoutIteration()
+
+    if (localStorage.getItem(this.graph.hash()) !== null) {
+      this.restoreLayout()
     }
+
+    else {
+      for (let i = 0; i < this.iterations; i++) {
+        this.layoutIteration()
+      }
+  
+      this.saveLayout()
+    }
+
     this.layoutCalcBounds()
+
+  }
+
+  restoreLayout() {
+    const previousLayout = JSON.parse(localStorage.getItem(this.graph.hash()))
+
+    each(this.graph.nodes, (node1) => {
+      for (const [key, value] of Object.entries(previousLayout)){
+        if (node1.id == key) {
+          node1.layoutPosX = value['layoutPosX']
+          node1.layoutPosY = value['layoutPosY']
+          node1.layoutForceX = value['layoutForceX']
+          node1.layoutForceY = value['layoutForceY']
+        }
+      }
+    })
+  }
+
+  saveLayout() {
+    let nodesPositions = {}
+  
+    each(this.graph.nodes, (node) => {
+      nodesPositions[node.id] = {
+        'layoutPosX': node.layoutPosX,
+        'layoutPosY': node.layoutPosY,
+        'layoutForceX': node.layoutForceX,
+        'layoutForceY': node.layoutForceY
+      }
+    })
+
+    localStorage.setItem(this.graph.hash(), JSON.stringify(nodesPositions))
   }
 
   layoutPrepare() {

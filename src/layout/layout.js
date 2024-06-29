@@ -25,6 +25,14 @@ export default class Layout {
     throw new Error('not implemented')
   }
 
+  restoreLayout() { // eslint-disable-line
+    throw new Error('not implemented')
+  }
+
+  saveLayout() { // eslint-disable-line
+    throw new Error('not implemented')
+  }
+
   layoutCalcBounds() {
     let minx = Infinity
     let maxx = -Infinity
